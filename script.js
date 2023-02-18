@@ -15,10 +15,15 @@ inputField.setAttribute("placeholder", "Enter your location");
 const searchButton = document.createElement("button");
 searchButton.setAttribute("id", "searchBtn");
 searchButton.classList.add("fas", "fa-search");
+const removeBtn = document.createElement("button");
+removeBtn.setAttribute("id", "remove");
+removeBtn.classList.add("fa-solid", "fa-circle-minus");
+removeBtn.classList.add("no-click");
 
 searchField.appendChild(locationIcon);
 searchField.appendChild(inputField);
 searchField.appendChild(searchButton);
+searchField.appendChild(removeBtn);
 
 // Create not found elements
 const notFound = document.createElement("div");
@@ -106,7 +111,8 @@ container.appendChild(weatherDetails);
 function initializeContainer(container) {
   const search = container.querySelector("#searchBtn");
   search.addEventListener("click", updateWeatherData);
-
+  const remove = container.querySelector("#remove");
+  remove.addEventListener("click", removeContainer);
   function updateWeatherData() {
     const APIKey = "387fa6995e2020b16cccd10c56bbe4aa";
     const city = container.querySelector(".search-field input").value;
@@ -144,30 +150,67 @@ function initializeContainer(container) {
         switch (data.weather[0].main) {
           case "Clear":
             image.src = "weather/clear.png";
+            container.style.background = "url('weather/clear.gif')";
+            container.style.backgroundRepeat = "no-repeat";
+            container.style.backgroundSize = "cover";
             break;
 
           case "Rain":
             image.src = "weather/rain.png";
+            container.style.background = "url('weather/giphy.gif')";
+            container.style.backgroundRepeat = "no-repeat";
+            container.style.backgroundSize = "cover";
             break;
 
           case "Snow":
             image.src = "weather/snow.png";
+            container.style.background = "url('weather/snow.gif')";
+            container.style.backgroundRepeat = "no-repeat";
+            container.style.backgroundSize = "cover";
             break;
 
           case "Clouds":
             image.src = "weather/cloud.png";
+            container.style.background = "url('weather/clouds.gif')";
+            container.style.backgroundRepeat = "no-repeat";
+            container.style.backgroundSize = "cover";
             break;
 
           case "Haze":
             image.src = "weather/mist.png";
+            container.style.background = "url('weather/haze.gif')";
+            container.style.backgroundRepeat = "no-repeat";
+            container.style.backgroundSize = "cover";
             break;
 
           case "Mist":
             image.src = "weather/mist.png";
+            container.style.background = "url('weather/mist.gif')";
+            container.style.backgroundRepeat = "no-repeat";
+            container.style.backgroundSize = "cover";
             break;
 
           default:
             image.src = "";
+        }
+
+        if (data.weather[0].main === "Snow") {
+          const humidityIcon = container.querySelector(".humidity i");
+          const humidityLabel = container.querySelector(".humidity p");
+          const humidityValue = container.querySelector(".humidity span");
+
+          humidityIcon.style.color = "black";
+          humidityLabel.style.color = "black";
+          humidityValue.style.color = "black";
+
+          const windLabel = container.querySelector(".weather-details .wind p");
+          const windValue = container.querySelector(
+            ".weather-details .wind span"
+          );
+          const windIcon = container.querySelector(".weather-details .wind i");
+          windLabel.style.color = "black";
+          windValue.style.color = "black";
+          windIcon.style.color = "black";
         }
 
         temperature.innerHTML = `${parseInt(data.main.temp)}<span>°C</span>`;
@@ -181,6 +224,10 @@ function initializeContainer(container) {
         weatherDetails.classList.add("fadeIn");
         container.style.height = "590px";
       });
+  }
+
+  function removeContainer() {
+    container.remove();
   }
 }
 
@@ -200,7 +247,10 @@ document.body.appendChild(addSearchButtonDiv);
 //Clone container creating, styling and functionality
 
 addSearchButton.addEventListener("click", () => {
-  const cloneContainer = container.cloneNode(true);
+  cloneContainer = container.cloneNode(true);
+  cloneContainer.querySelector("#remove").classList.remove("no-click");
+
+  cloneContainer.style.background = "#fff";
   cloneContainer.querySelector("input").value = "";
   cloneContainer.querySelector(".weather-box").classList.remove("fadeIn");
   cloneContainer.querySelector(".weather-details").classList.remove("fadeIn");
@@ -208,8 +258,35 @@ addSearchButton.addEventListener("click", () => {
   document.body.appendChild(cloneContainer);
   const btn = cloneContainer.querySelector("#searchBtn");
   btn.addEventListener("click", () => {
+    resetClonedColors(cloneContainer);
     cloneContainer.querySelector(".weather-box").classList.add("fadeIn");
     cloneContainer.querySelector(".weather-details").classList.add("fadeIn");
   });
   initializeContainer(cloneContainer);
 });
+
+// removeBtn.addEventListener("click", () => {
+//   const lastCloned = clonedArray.pop();
+//   lastCloned.remove();
+// });
+
+function resetClonedColors(cloneContainer) {
+  const clonedWeatherDetails = cloneContainer.querySelector(".weather-details");
+  const clonedHumidityIcon = cloneContainer.querySelector(".humidity i");
+  const clonedHumidityLabel = cloneContainer.querySelector(".humidity p");
+  const clonedHumidityText = cloneContainer.querySelector(".humidity div");
+  const clonedHumidityValue =
+    cloneContainer.querySelector(".humidity div span");
+  const clonedWindIcon = cloneContainer.querySelector(".wind i");
+  const clonedWindLabel = cloneContainer.querySelector(".wind p");
+  const clonedWindValue = cloneContainer.querySelector(".wind div span");
+
+  clonedWeatherDetails.style.color = "#fff";
+  clonedHumidityIcon.style.color = "#fff";
+  clonedHumidityLabel.style.color = "#fff";
+  clonedHumidityText.style.color = "#fff";
+  clonedHumidityValue.style.color = "#fff";
+  clonedWindIcon.style.color = "#fff";
+  clonedWindLabel.style.color = "#fff";
+  clonedWindValue.style.color = "#fff";
+}
