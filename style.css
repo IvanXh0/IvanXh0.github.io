@@ -277,7 +277,7 @@ body {
   position: absolute;
   margin: 0 auto;
   top: 0;
-  left: 0px;
+  right: 0px;
 }
 
 .error {
