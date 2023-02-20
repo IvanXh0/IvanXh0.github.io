@@ -17,7 +17,7 @@ searchButton.setAttribute("id", "searchBtn");
 searchButton.classList.add("fas", "fa-search");
 const removeBtn = document.createElement("button");
 removeBtn.setAttribute("id", "remove");
-removeBtn.classList.add("fa-solid", "fa-circle-minus");
+removeBtn.classList.add("fa-solid", "fa-rectangle-xmark");
 removeBtn.classList.add("no-click");
 
 searchField.appendChild(locationIcon);
@@ -125,15 +125,22 @@ function initializeContainer(container) {
       .then((response) => response.json())
       .then((data) => {
         if (data.cod === "404") {
-          container.style.height = "400px";
-          weatherBox.style.display = "none";
-          weatherDetails.style.display = "none";
-          notFound.style.display = "block";
-          notFound.classList.add("fadeIn");
+          // container.style.height = "400px";
+
+          // container.querySelector(".weather-box").style.display = "none";
+          // container.querySelector(".weather-details").style.display = "none";
+          // container.querySelector(".not-found").style.display = "block";
+          // container.querySelector(".not-found").classList.add("fadeIn");
+          // return;
+          container.querySelector("#textInput").classList.add("error");
+          setTimeout(() => {
+            container.querySelector("#textInput").classList.remove("error");
+          }, 3000);
           return;
         }
-        notFound.style.display = "none";
-        notFound.classList.remove("fadeIn");
+
+        // container.querySelector(".not-found").style.display = "none";
+        // container.querySelector(".not-found").classList.remove("fadeIn");
 
         const image = container.querySelector(".weather-box img");
         const temperature = container.querySelector(
@@ -194,6 +201,13 @@ function initializeContainer(container) {
             image.src = "";
         }
 
+        if (data.weather[0].main === "Mist") {
+          const weatherDescription = container.querySelector(
+            ".weatherbox .temperature p"
+          );
+          weatherDescription.style.color = "#fff";
+        }
+
         if (data.weather[0].main === "Snow") {
           const humidityIcon = container.querySelector(".humidity i");
           const humidityLabel = container.querySelector(".humidity p");
@@ -249,7 +263,7 @@ document.body.appendChild(addSearchButtonDiv);
 addSearchButton.addEventListener("click", () => {
   cloneContainer = container.cloneNode(true);
   cloneContainer.querySelector("#remove").classList.remove("no-click");
-
+  cloneContainer.querySelector("#textInput").classList.remove("error");
   cloneContainer.style.background = "#fff";
   cloneContainer.querySelector("input").value = "";
   cloneContainer.querySelector(".weather-box").classList.remove("fadeIn");

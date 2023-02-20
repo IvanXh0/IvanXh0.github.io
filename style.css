@@ -31,7 +31,7 @@ body {
   box-shadow: 16px 13px 16px 0px rgba(0, 0, 0, 0.75);
   -webkit-box-shadow: 16px 13px 16px 0px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 16px 13px 16px 0px rgba(0, 0, 0, 0.75);
-  /* overflow: hidden; */
+  overflow: hidden;
   border-radius: 18px;
   width: 400px;
   height: 120px;
@@ -270,13 +270,32 @@ body {
 }
 
 #remove {
-  font-size: 1rem;
+  font-size: 0.8rem;
   width: 30px;
   height: 30px;
   background-color: #d11a2a;
   position: absolute;
   margin: 0 auto;
-  left: 385px;
-  right: 0;
-  top: -15px;
+  top: 0;
+  left: 0px;
+}
+
+.error {
+  animation: shake 0.2s ease-in-out 0s 2;
+  box-shadow: 0 0 0.5em red;
+}
+
+@keyframes shake {
+  0% {
+    margin-left: 0rem;
+  }
+  25% {
+    margin-left: 0.5rem;
+  }
+  75% {
+    margin-left: -0.5rem;
+  }
+  100% {
+    margin-left: 0rem;
+  }
 }
